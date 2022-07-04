@@ -1,0 +1,1 @@
+webservice=http://10.100.1.101:9024/wsa/dev/wsdl?targetURI
