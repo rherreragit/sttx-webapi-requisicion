@@ -35,7 +35,7 @@
             if(isset($_GET['dominio'],$_GET['entidady'],$_GET['usuario'])){
                $respuesta = pendientesRequisicion($_GET['dominio'],$_GET['entidady'],$_GET['usuario'],$ip);
                echo $respuesta;
-            }            
+            }
             break;
         case 'POST':
             //Metodo POST para guardar Catalogo
@@ -51,6 +51,11 @@
             //Metodo POST para guardar Requisicion
             if(isset($_POST['dominio'],$_POST['usuario'],$_POST['accion'],$_POST['requisicion'],$_POST['entidad'],$_POST['descripcion'],$_POST['proveedor'],$_POST['gridjson_lista'])){
                 $respuesta = saveRequisicion($_POST['dominio'],$_POST['usuario'],$_POST['accion'],$_POST['requisicion'],$_POST['entidad'],$_POST['descripcion'],$_POST['proveedor'],$_POST['gridjson_lista'],$ip);
+                echo $respuesta;
+            }
+            //Metodo POST para autorizar Requisicion
+            if(isset($_POST['dominio'],$_POST['Requi'],$_POST['usuario'],$_POST['comentario'],$_POST['action'])){
+                $respuesta = autorizaRequisicion($_POST['dominio'],$_POST['Requi'],$_POST['usuario'],$_POST['comentario'],$_POST['action'],$ip);
                 echo $respuesta;
             }
             break;
@@ -240,4 +245,21 @@
         $data = json_encode($response);
 
         return $data;
+    }
+
+
+    FUNCTION autorizaRequisicion($dominio,$Requi,$usuario,$comentario,$action,$ip){
+
+      $clienteSOAP = new SoapClient($ip.'=urn:requisiciones');
+      $request = array(
+                      "idomain" => $dominio,
+                      "irequisicion" => $Requi,
+                      "iuser" => $usuario,
+                      "icomentario" => $comentario,
+                      "iaction" => $action
+                      );
+      $response = $clienteSOAP->wsreqapprove($request);
+      $data = json_encode($response);
+
+      return $data;
     }
